@@ -1,0 +1,15 @@
+global:
+  log_level: debug
+client:
+  interfaces:
+    - name: enp0s8
+  host: 127.0.0.1
+  port: 50052
+  transport_converter:
+    host: 127.0.0.1
+    port: 50051
+server:
+  interfaces:
+    - name: enp0s8
+  host: 127.0.0.1
+  port: 50051
