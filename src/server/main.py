@@ -3,14 +3,10 @@
 import sys
 import os
 from threading import Thread
-from client import ConvertClient
+from server import TransportConverter
 from config import Config
 
 from netfilterqueue import NetfilterQueue
-
-def dummy_handle_packet(packet):
-    print(packet)
-    packet.accept()
 
 def run_queue_thread(queue_num: int, interface: str, nfqueue):
     print(f'Running queue {queue_num} on interface {interface}')
@@ -21,9 +17,9 @@ def run_queue_thread(queue_num: int, interface: str, nfqueue):
         os.system(f'iptables -D OUTPUT -o {interface} -j NFQUEUE --queue-num {queue_num}')
         
 
-def enable_packet_queues(config: Config, client: ConvertClient):
+def enable_packet_queues(config: Config, server: TransportConverter):
     """
-    Enable the queues for the client to intercept packets
+    Enable the queues for the server to intercept packets
     """
     queue_num = 0
     queues = []
@@ -35,7 +31,7 @@ def enable_packet_queues(config: Config, client: ConvertClient):
         
         # bind the queue to the client
         nfqueue = NetfilterQueue()
-        nfqueue.bind(queue_num, client.on_packet)
+        nfqueue.bind(queue_num, server.on_packet)
         thread = Thread(target=run_queue_thread, args=(queue_num, interface["name"], nfqueue))
         thread.start()
         
@@ -53,10 +49,10 @@ if __name__ == '__main__':
     config_file = sys.argv[1]
     config = Config(config_file)
     
-    client = ConvertClient(config.host, config.port)
+    server = TransportConverter(config.host, config.port)
     
     # set up the packet queue
-    queues = enable_packet_queues(config, client)
+    queues = enable_packet_queues(config, server)
     print(f'Enabled {len(queues)} packet queues')
     # keep the client running
     while True:

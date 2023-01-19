@@ -1,4 +1,6 @@
+import socket
 from scapy.all import *
+
 
 """
 Convert Protocol Fixed Header
@@ -59,7 +61,7 @@ class ConnectTLV(Packet):
         # The Total Length is the number of 32-bit words, including the header
         ByteField(name="length", default=0),
         ShortField(name="remote_peer_port", default=0),
-        IP6Field(name="remote_peer_ip", default="::1")
+        IPField(name="remote_peer_ip", default="127.0.0.1")
     ]
     
     def set_length(self):
