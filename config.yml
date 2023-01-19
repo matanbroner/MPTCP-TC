@@ -11,5 +11,5 @@ client:
 server:
   interfaces:
     - name: enp0s9
-  host: 127.0.0.1
+  host: 192.168.56.109
   port: 50051
