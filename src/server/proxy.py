@@ -27,7 +27,7 @@ class TCPProxy:
                 # parse the payload as a Convert Protocol TLV
                 payload = packet[TCP].payload
                 tlv = ConvertProtocolFixedHeader(payload)
-                tlv.parse()
+                tlv.show()
             self.client_on_packet(packet)
         
         
