@@ -21,7 +21,7 @@ def enable_packet_queues(config: Config, client: ConvertClient):
         
         # bind the queue to the client
         nfqueue.bind(queue, client.on_packet)
-        nfqueue.run(block=False)
+        nfqueue.run()
         
         queue += 1
     return queue
