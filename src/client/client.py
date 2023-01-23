@@ -63,24 +63,25 @@ class ConvertClient:
     def on_packet(self, packet):
         print("Received packet")
         pkt = IP(packet.get_payload())
-        payload = None
+        payload, modified = None, False
         # if TCP packet
         if TCP in pkt:
             flags = pkt[TCP].flags
             # if SYN packet and came from local machine (ie. not from Transport Converter)
             if flags == 'S' and pkt[IP].src != self.host:
-                payload = self.on_tcp_syn(pkt)
+                payload, modified = self.on_tcp_syn(pkt)
             # if SYN-ACK packet and came from Transport Converter
             elif flags == 'SA' and pkt[IP].src == self.host:
-                payload = self.on_tcp_syn_ack(pkt)
+                payload, modified = self.on_tcp_syn_ack(pkt)
             del pkt[IP].chksum
             del pkt[TCP].chksum
         
-        if payload != None:
+        if modified:
             payload.show()
-            packet.set_payload(bytes(payload))
-            
-        packet.accept()
+            packet.drop()
+            send(payload)
+        else:
+            packet.accept()
         
     def on_tcp_syn(self, pkt):
         print("Received SYN packet")
@@ -89,17 +90,17 @@ class ConvertClient:
         for option in options:
             if option[0] == MPTCP_CAPABLE:
                     pkt = self.reroute_connection_to_ts(pkt)
-                    return pkt
-        return pkt
+                    return pkt, True
+        return pkt, False
     
     def on_tcp_syn_ack(self, pkt):
         print("Received SYN-ACK packet")
         # Make sure we have the connection in cache
         if (pkt[IP].dst, pkt[TCP].dport) not in self.connections:
-            return pkt
+            return pkt, False
         connection = self.connections[(pkt[IP].dst, pkt[TCP].dport)]
         # Modify the src IP and port of the SYN-ACK packet to the original server
         pkt[IP].src = connection.remote_ip
         pkt[TCP].sport = connection.remote_port
-        return pkt
+        return pkt, True
         

@@ -2,8 +2,10 @@
 
 import sys
 import os
+import threading
 from client import ConvertClient
 from config import Config
+
 
 from netfilterqueue import NetfilterQueue
 
@@ -12,8 +14,8 @@ def enable_packet_queues(config: Config, client: ConvertClient):
     Enable the queues for the client to intercept packets
     """
     queue = 0
-    nfqueue = NetfilterQueue()
     for interface in config.interfaces:
+        nfqueue = NetfilterQueue()
         # packets coming into the interface will be queued
         os.system(f'iptables -A INPUT -i {interface["name"]} -j NFQUEUE --queue-num {queue}')
         # packets going out of the interface will be queued
