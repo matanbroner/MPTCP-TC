@@ -42,6 +42,7 @@ class TCPProxy:
             ss = select.select
             inputready, outputready, exceptready = ss(self.input_list, [], [])
             for self.s in inputready:
+                print(self.s)
                 if self.s == self.server:
                     self.on_accept()
                     break
