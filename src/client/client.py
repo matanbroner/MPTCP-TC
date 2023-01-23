@@ -78,7 +78,7 @@ class ConvertClient:
         if modified:
             payload.show2()
             packet.drop()
-            send(payload)
+            send(payload, iface="enp0s3")
         else:
             packet.accept()
         
