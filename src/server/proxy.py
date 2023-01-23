@@ -27,8 +27,8 @@ class TCPProxy:
                 # located in the SYN payload
                 # parse the payload as a Convert Protocol TLV
                 payload = packet[TCP].payload
-                tlv = ConvertProtocolFixedHeader(payload)
-                tlv.show()
+                #tlv = ConvertProtocolFixedHeader(payload)
+                #tlv.show()
             self.client_on_packet(packet)
         
         
