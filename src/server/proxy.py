@@ -18,6 +18,7 @@ class TCPProxy:
         try:
             s.bind((self.host, self.port))
             s.listen(5)
+            self.lsock.append(s)
             print('TCP Proxy listening on port', self.port)
             while True:
                 rsock, wsock, esock = select.select(self.lsock, [], [])
