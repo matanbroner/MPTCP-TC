@@ -19,14 +19,14 @@ class TCPProxy:
         sniff(iface="enp0s8", prn=self.on_packet)
         
     def on_packet(self, packet: scapy.packet.Packet):
-        if packet[TCP].dport == self.port:
-            #print(f"IP: {packet[IP].src}:{packet[TCP].sport} -> {packet[IP].dst}:{packet[TCP].dport}")
+        if TCP in packet and packet[TCP].dport == self.port:
+            print(f"IP: {packet[IP].src}:{packet[TCP].sport} -> {packet[IP].dst}:{packet[TCP].dport}")
             # if initial packet (SYN)
-            #if packet[TCP].flags == "S":
+            if packet[TCP].flags == "S":
                 # get the nested host and port from the Convert Protocol TLV
                 # located in the SYN payload
                 # parse the payload as a Convert Protocol TLV
-                #payload = packet[TCP].payload
+                payload = packet[TCP].payload
                 #tlv = ConvertProtocolFixedHeader(payload)
                 #tlv.show()
             self.client_on_packet(packet)
