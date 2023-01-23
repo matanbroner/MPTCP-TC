@@ -13,7 +13,7 @@ class TCPProxy:
         self.port = port
         self.connections = {}
         
-        sniff(filter="tcp", prn=self.on_packet)
+        sniff(filter="tcp", iface="enp0s8", prn=self.on_packet)
         
     
     def on_packet(self, pkt):
