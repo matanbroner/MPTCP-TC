@@ -42,7 +42,7 @@ if __name__ == '__main__':
         config_file = sys.argv[1]
         config = Config(config_file)
         
-        client = ConvertClient(config.host, config.port)
+        client = ConvertClient(config.transport_converter["host"], config.transport_converter["port"])
         
         # set up the packet queue
         queues, threads = enable_packet_queues(config, client)

@@ -16,9 +16,9 @@ Parameters:
     port [int]: Transport Converter server port
 """
 class ConvertClient:
-    def __init__(self, host: str, port: int):
-        self.host = host
-        self.port = port
+    def __init__(self, tc_host: str, tc_port: int):
+        self.tc_host = tc_host
+        self.tc_port = tc_port
         self.connections = {}
         
     
@@ -32,8 +32,8 @@ class ConvertClient:
         # Store the original dst IP and port in TLV
         server_ip = syn_packet[IP].dst
         server_port = syn_packet[TCP].dport
-        syn_packet[IP].dst = self.host
-        syn_packet[TCP].dport = self.port
+        syn_packet[IP].dst = self.tc_host
+        syn_packet[TCP].dport = self.tc_port
         
         # Craft the Connect TLV
         tlv = ConvertProtocolFixedHeader()
@@ -67,10 +67,10 @@ class ConvertClient:
         if TCP in pkt:
             flags = pkt[TCP].flags
             # if SYN packet and came from local machine (ie. not from Transport Converter)
-            if flags == 'S' and pkt[IP].src != self.host:
+            if flags == 'S':
                 payload, modified = self.on_tcp_syn(pkt)
             # if SYN-ACK packet and came from Transport Converter
-            elif flags == 'SA' and pkt[IP].src == self.host:
+            elif flags == 'SA':
                 payload, modified = self.on_tcp_syn_ack(pkt)
             del pkt[IP].chksum
             del pkt[TCP].chksum

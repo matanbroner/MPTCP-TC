@@ -14,8 +14,6 @@ class Config:
             config = yaml.safe_load(f)
             config = config["client"]
             self.interfaces = config["interfaces"]
-            self.host = config["host"]
-            self.port = config["port"]
             self.transport_converter["host"] = config["transport_converter"]["host"]
             self.transport_converter["port"] = config["transport_converter"]["port"]
     
