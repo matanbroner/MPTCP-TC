@@ -23,6 +23,7 @@ class TCPProxy:
             while True:
                 rsock, wsock, esock = select.select(self.lsock, [], [])
                 for sock in rsock:
+                    print('Got a socket')
                     if sock == s:
                         self.accept_new_connection(s)
                     else:
