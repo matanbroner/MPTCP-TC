@@ -38,6 +38,10 @@ if __name__ == '__main__':
         
         # set up the packet queue
         queues = enable_packet_queues(config, client)
+        
+        # keep the client running
+        while True:
+            pass
     except KeyboardInterrupt:
         print('Shutting down...')
         # remove the iptables rules
