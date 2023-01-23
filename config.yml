@@ -6,10 +6,8 @@ client:
   host: 127.0.0.1
   port: 50052
   transport_converter:
-    host: 127.0.0.1
+    host: 192.168.56.107
     port: 50051
 server:
-  interfaces:
-    - name: enp0s9
-  host: 192.168.56.109
+  host: 192.168.56.107
   port: 50051
