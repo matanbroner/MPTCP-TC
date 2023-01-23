@@ -4,6 +4,8 @@ Uses raw sockets to listen for incoming TCP packets and
 forwards them to the nested host and port based on the Convert Protocol TLV
 """
 
+import socket
+
 class TCPProxy:
     def __init__(self, host: str, port: int):
         self.host = host
