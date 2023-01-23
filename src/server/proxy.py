@@ -7,7 +7,8 @@ import select
 import sys
 
 class TCPProxy:
-    def __init__(self, port) -> None:
+    def __init__(self, host, port) -> None:
+        self.host = host
         self.port = port
         self.lsock = []
         
@@ -15,7 +16,7 @@ class TCPProxy:
     def run(self) -> None:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.bind(('', self.port))
+            s.bind((self.host, self.port))
             s.listen(5)
             print('TCP Proxy listening on port', self.port)
             while True:
