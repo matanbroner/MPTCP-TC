@@ -36,5 +36,11 @@ class TransportConverter:
         """
         Run a TCP proxy server to listen for incoming connections from the client
         """
-        self.tcp_proxy = TCPProxy(self.host, self.port)
+        self.tcp_proxy = TCPProxy(self.port, self.on_packet)
+        
+    def on_packet(self, pkt: scapy.packet.Packet):
+        """
+        Callback for TCP proxy server
+        """
+        pkt.show()
     
