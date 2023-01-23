@@ -14,18 +14,26 @@ def enable_packet_queues(config: Config, client: ConvertClient):
     Enable the queues for the client to intercept packets
     """
     queue = 0
-    for interface in config.interfaces:
+    threads = []
+    
+    def _start_queue(queue: int, iface: str, client: ConvertClient):
         nfqueue = NetfilterQueue()
         # packets coming into the interface will be queued
-        os.system(f'iptables -A INPUT -i {interface["name"]} -j NFQUEUE --queue-num {queue}')
+        os.system(f'iptables -A INPUT -i {iface} -j NFQUEUE --queue-num {queue}')
         # packets going out of the interface will be queued
-        os.system(f'iptables -A OUTPUT -o {interface["name"]} -j NFQUEUE --queue-num {queue}')
+        os.system(f'iptables -A OUTPUT -o {iface} -j NFQUEUE --queue-num {queue}')
         
         # bind the queue to the client
         nfqueue.bind(queue, client.on_packet)
         nfqueue.run()
         
+    for interface in config.interfaces:
+        t = threading.Thread(target=_start_queue, args=(queue, interface["name"], client))
+        threads.append(t)
         queue += 1
+    for t in threads:
+        t.start()
+        t.join()
     return queue
 
 if __name__ == '__main__':
