@@ -31,10 +31,8 @@ def enable_packet_queues(config: Config, client: ConvertClient):
         t = threading.Thread(target=_start_queue, args=(queue, interface["name"], client))
         threads.append(t)
         queue += 1
-    for t in threads:
-        t.start()
-        t.join()
-    return queue
+        
+    return queue, threads
 
 if __name__ == '__main__':
     try:
@@ -47,11 +45,15 @@ if __name__ == '__main__':
         client = ConvertClient(config.host, config.port)
         
         # set up the packet queue
-        queues = enable_packet_queues(config, client)
+        queues, threads = enable_packet_queues(config, client)
         
         print('Client running...')
         for i in range(queues):
             print(f'\t[{i}] Queue running for interfaces {config.interfaces[i]["name"]}...')
+            
+        for t in threads:
+            t.start()
+            t.join()
         
         # keep the client running
         while True:
