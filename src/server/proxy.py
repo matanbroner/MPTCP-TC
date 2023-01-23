@@ -8,14 +8,15 @@ import socket
 from scapy.all import *
 
 class TCPProxy:
-    def __init__(self, host: str, port: int):
-        self.host = host
+    def __init__(self, port, on_packet):
         self.port = port
+        self.client_on_packet = on_packet
         self.connections = {}
         
         sniff(filter="tcp", iface="enp0s8", prn=self.on_packet)
         
-    
-    def on_packet(self, pkt):
-        pkt.show()
+    def on_packet(self, packet: scapy.packet.Packet):
+        if packet[TCP].dport == self.port:
+            self.client_on_packet(packet)
+        
         
