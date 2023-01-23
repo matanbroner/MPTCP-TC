@@ -41,7 +41,7 @@ if __name__ == '__main__':
         
         print('Client running...')
         for i in range(queues):
-            print(f'\t[{i}] Queue running for interfaces f{config["interfaces"][i]["name"]}...')
+            print(f'\t[{i}] Queue running for interfaces f{config.interfaces[i]["name"]}...')
         
         # keep the client running
         while True:
