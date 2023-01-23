@@ -12,7 +12,6 @@ class Config:
         with open(filename, "r") as f:
             config = yaml.safe_load(f)
             config = config["server"]
-            self.interfaces = config["interfaces"]
             self.host = config["host"]
             self.port = config["port"]
     
