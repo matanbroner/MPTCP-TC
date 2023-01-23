@@ -2,7 +2,7 @@ global:
   log_level: debug
 client:
   interfaces:
-    - name: enp0s3
+    - name: enp0s9
   transport_converter:
     host: 192.168.56.106
     port: 50051
