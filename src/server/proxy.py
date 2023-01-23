@@ -16,10 +16,9 @@ class TCPProxy:
         self.connections = {}
         
         print("TCP Proxy Server started")
-        sniff(iface="enp0s8", prn=self.on_packet)
+        sniff(filter="tcp", iface="enp0s8", prn=self.on_packet)
         
     def on_packet(self, packet: scapy.packet.Packet):
-        packet.show()
         if packet[TCP].dport == self.port:
             print(f"IP: {packet[IP].src}:{packet[TCP].sport} -> {packet[IP].dst}:{packet[TCP].dport}")
             # if initial packet (SYN)
