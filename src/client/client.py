@@ -88,7 +88,7 @@ class ConvertClient:
         options = pkt[TCP].options
         for option in options:
             if option[0] == MPTCP_CAPABLE:
-                    pkt = self.reroute_connection_to_ts(pkt)
+                    #pkt = self.reroute_connection_to_ts(pkt)
                     return pkt, True
         return pkt, False
     
