@@ -39,13 +39,15 @@ if __name__ == '__main__':
         # set up the packet queue
         queues = enable_packet_queues(config, client)
         
+        print('Client running...')
+        for i in range(queues):
+            print(f'\t[{i}] Queue running for interfaces f{config["interfaces"][i]["name"]}...')
+        
         # keep the client running
         while True:
             pass
     except KeyboardInterrupt:
         print('Shutting down...')
         # remove the iptables rules
-        for i in range(queues):
-            os.system(f'iptables -D INPUT -j NFQUEUE --queue-num {i}')
-            os.system(f'iptables -D OUTPUT -j NFQUEUE --queue-num {i}')
+        os.system(f'iptables -F')
         sys.exit(0)
