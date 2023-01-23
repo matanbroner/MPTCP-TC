@@ -33,6 +33,7 @@ class TCPProxy:
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server.bind((host, port))
         self.server.listen(200)
+        print("TCP Proxy Server started on %s:%d" % (host, port))
 
     def run(self):
         self.input_list.append(self.server)
