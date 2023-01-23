@@ -35,18 +35,19 @@ class ConvertClient:
         syn_packet[IP].dst = self.tc_host
         syn_packet[TCP].dport = self.tc_port
         
-        # # Craft the Connect TLV
-        # tlv = ConvertProtocolFixedHeader()
-        # connect = ConnectTLV(
-        #     remote_peer_port=server_port,
-        #     remote_peer_ip=server_ip
-        # )
-        # connect.set_length()
-        # tlv = tlv / connect
-        # tlv.set_length()
+        # Craft the Connect TLV
+        tlv = ConvertProtocolFixedHeader()
+        connect = ConnectTLV(
+            remote_peer_port=server_port,
+            remote_peer_ip=server_ip
+        )
+        connect.set_length()
+        tlv = tlv / connect
+        tlv.set_length()
                 
-        # # Attach the TLV to the SYN payload as a new TCP packet
+        # Attach the TLV to the SYN payload as a new TCP packet
         # syn_packet = syn_packet / tlv
+        syn_packet = syn_packet / Raw(load=bytes(tlv))
         
         # Setup connection in cache
         # We use this to source the port number for incoming packets
