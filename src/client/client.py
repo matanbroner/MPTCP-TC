@@ -47,7 +47,7 @@ class ConvertClient:
                 
         # Attach the TLV to the SYN payload as a new TCP packet
         # syn_packet = syn_packet / tlv
-        # syn_packet = syn_packet / Raw(load=bytes(tlv))
+        syn_packet = syn_packet / Raw(load=bytes(tlv))
         
         # Setup connection in cache
         # We use this to source the port number for incoming packets
