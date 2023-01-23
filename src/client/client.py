@@ -61,6 +61,7 @@ class ConvertClient:
         return syn_packet
         
     def on_packet(self, packet):
+        print("Received packet")
         pkt = IP(packet.get_payload())
         payload = None
         # if TCP packet
