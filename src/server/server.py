@@ -27,7 +27,7 @@ class TransportConverter:
         
         # Run TCP server to listen for incoming connections from the client
         # In a separate thread
-        t = threading.Thread(target=self.run_tcp_server)
+        t = threading.Thread(target=self.run_tcp_proxy)
         t.start()
         t.join()
         
