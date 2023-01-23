@@ -77,9 +77,9 @@ class ConvertClient:
             del pkt[TCP].chksum
         
         if modified:
-            payload.show2()
+            payload.show()
             packet.drop()
-            send(payload, iface="enp0s3")
+            send(payload)
         else:
             packet.accept()
         
