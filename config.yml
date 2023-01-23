@@ -2,7 +2,7 @@ global:
   log_level: debug
 client:
   interfaces:
-    - name: enp0s8
+    - name: enp0s3
   host: 127.0.0.1
   port: 50052
   transport_converter:
