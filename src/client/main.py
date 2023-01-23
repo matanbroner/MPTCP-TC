@@ -46,7 +46,7 @@ if __name__ == '__main__':
         # keep the client running
         while True:
             pass
-    except KeyboardInterrupt:
+    finally:
         print('Shutting down...')
         # remove the iptables rules
         os.system(f'iptables -F')
